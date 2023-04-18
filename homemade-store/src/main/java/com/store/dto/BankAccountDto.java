@@ -20,7 +20,7 @@ public class BankAccountDto {
     @NotNull
     @NotBlank
     @NotEmpty
-    @Size(min = 16, max = 19)
+    @Size(min = 15, max = 20)
     @OnlyDigitsAndSpaces
     private String cardNumber;
 
