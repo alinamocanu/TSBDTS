@@ -9,44 +9,41 @@
 <body>
 <div class="container text-center">
   <h1 style="text-align: center; font-weight: bold">Decorations</h1>
-
-  <div class="pos-f-t marginTop">
-    <div class="collapse" id="navbarToggleExternalContent">
-      <div class="bg-light p-4">
-        <h4>Collapsed content</h4>
-        <form class="form-inline" action="/decorations" method="GET">
-          <div class="form-group mb-2">
-            <input name="name" type="text" class="form-control" placeholder="Keyword">
-          </div>
-          <div class="form-group mx-sm-3 mb-2">
-            <select id="category" class="custom-select" name="category">
-              <option value="null">Choose category</option>
-              <option
-                      th:each="category:${T(com.store.domain.DecorationCategory).values()}"
-                      th:value="${category}" th:text="${category}">
-              </option>
-            </select>
-          </div>
-
-          <div class="form-group mx-sm-3 mb-2">
-            <label class="mr-2">Price: </label>
-            <input name="descending" class="form-check-input" type="radio" id="gridRadios2" value="true">
-            <label class="form-check-label mr-2" for="gridRadios2">
-              Descending
-            </label>
-          </div>
-          <button type="submit" class="btn btn-primary mb-2">See results</button>
-        </form>
-      </div>
+  <a  class="btn btn-primary mt-1" href="/decorations/new" style="background-color: darkcyan">Add new decoration</a>
+  </br>
+  </br>
+  <form class="form-inline" action="/decorations" method="GET">
+    <div class="form-group mb-2">
+      <input name="name" type="text" class="form-control" placeholder="Search by name">
     </div>
-    <nav class="navbar navbar-light bg-light">
-      <button class="navbar-toggler" type="button" data-toggle="collapse"
-              data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
-              aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span> Filter products
-      </button>
-    </nav>
-  </div>
+
+    <div class="form-group mx-sm-3 mb-2">
+      <select id="category" class="custom-select" name="category">
+        <option value="null">Choose category</option>
+        <option
+                th:each="category:${T(com.store.domain.DecorationCategory).values()}"
+                th:value="${category}" th:text="${category}">
+        </option>
+      </select>
+    </div>
+
+
+    <div class="form-group mx-sm-3 mb-2">
+      <select id="order" class="custom-select" name="order">
+        <option value="null">Order by price</option>
+        <option
+                th:value="ascending" th:text="Ascending">
+        </option>
+        <option
+                th:value="descending" th:text="Descending">
+        </option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mb-2" style="background-color: darkcyan">Filter</button>
+  </form>
+
+
 
   <div th:if="${decorationPage.content.size() == 0}" class="card-columns" style="margin-top:5rem;">
     <h2 class="m-5 centered"><span class="badge badge-secondary" style="background-color: darkcyan">No decorations found!</span></h2>
@@ -89,3 +86,5 @@
     </ul>
   </navbar>
 </div>
+</body>
+</html>

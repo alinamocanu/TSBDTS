@@ -25,38 +25,17 @@
             <br/>
 
             <h5 class="card-text" th:text="${decoration.category} "></h5>
+
+            <a  class="btn btn-primary mt-1" th:href="@{'/decorations/delete/'+${decoration.decorationId}}" style="background-color: darkcyan">Delete</a>
+
+            <a  class="btn btn-primary mt-1" th:href="@{'/decorations/new'}" style="background-color: darkcyan">Edit</a>
         </div>
-    </div>
 
-</div>
-
-
-<div class="container mt-5 mb-5">
-    <div class="d-flex justify-content-center row">
-<!--        <div sec:authorize="isAuthenticated()" class="col-md-10">&ndash;&gt;-->
-
-
-<!-- Modal Cart -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Account required</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                You need to login to add a product to the cart!
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a type="button" href="/login" class="btn btn-primary">Login</a>
-            </div>
-        </div>
-    </div>
-</div>
+        <form th:action="'/cart/add?decorationId=' + ${decoration.decorationId} + '&quantity=1'" method="post">
+            <button type="submit" class="btn btn-primary" style="margin-top:5rem; background-color: darkcyan; ">
+                Add to cart
+            </button>
+        </form>
     </div>
 </div>
 </body>

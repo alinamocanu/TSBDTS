@@ -43,7 +43,7 @@ public class DecorationServiceImpl implements DecorationService {
     }
 
     @Override
-    public Page<Decoration> getDecorationsBy(String category, String name, boolean order, Pageable pageable) {
+    public Page<Decoration> getDecorationsBy(String category, String name, String order, Pageable pageable) {
         if (category != null && !category.equals("null")) {
             String upperCaseCategory = category.toUpperCase();
             if (!DecorationCategory.contains(upperCaseCategory))
@@ -51,24 +51,36 @@ public class DecorationServiceImpl implements DecorationService {
         }
         if (category != null && category.equals("null"))
             category = null;
+
         List<Decoration> decorations = new ArrayList<>();
         if (category != null){
-            if(name != null){
+            if(name != null  && !name.equals("")){
                 decorations = decorationRepository.findAllByCategoryAndDecorationName(DecorationCategory.valueOf(category.toUpperCase()), name);
             }
             else {
                 decorations = decorationRepository.findAllByCategory(DecorationCategory.valueOf(category.toUpperCase()));
             }
         }
-        else if (name != null){
-            decorations = decorationRepository.findAllByDecorationName(name);
+        else if (name != null  && !name.equals("")){
+            decorations = decorationRepository.findAllByDecorationNameContains(name);
         }
         else {
             decorations = decorationRepository.findAll();
         }
-        decorations = decorations.stream()
-                .sorted(order? Comparator.comparingDouble(Decoration::getPrice).reversed() : Comparator.comparingDouble(Decoration::getPrice))
-                .collect(Collectors.toList());
+
+        if (order!= null && order.equals("null"))
+            order = null;
+        if(order != null) {
+            if (order.equals("ascending")) {
+                decorations = decorations.stream()
+                        .sorted(Comparator.comparing(Decoration::getPrice))
+                        .collect(Collectors.toList());
+            } else {
+                decorations = decorations.stream()
+                        .sorted(Comparator.comparing(Decoration::getPrice).reversed())
+                        .collect(Collectors.toList());
+            }
+        }
 
         return findPaginated(decorations, pageable);
     }

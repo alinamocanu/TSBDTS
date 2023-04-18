@@ -11,7 +11,7 @@ public interface DecorationRepository extends JpaRepository<Decoration, Integer>
     List<Decoration> findAll();
     List<Decoration> findAllByCategory(DecorationCategory category);
     List<Decoration> findAllByCategoryAndDecorationName(DecorationCategory category, String name);
-    List<Decoration> findAllByDecorationName(String name);
+    List<Decoration> findAllByDecorationNameContains(String name);
     void deleteByDecorationId(Long id);
 
 }

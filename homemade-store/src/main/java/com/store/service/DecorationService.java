@@ -19,7 +19,7 @@ public interface DecorationService {
 
     Decoration findDecorationByDecorationId(Long decorationId);
 
-    Page<Decoration> getDecorationsBy(String category, String name, boolean order, Pageable pageable);
+    Page<Decoration> getDecorationsBy(String category, String name, String order, Pageable pageable);
 
     void deleteById(Long id);
 }
