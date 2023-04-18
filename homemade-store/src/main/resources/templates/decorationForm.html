@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Decoration Info</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<body>
+<form th:object="${decorationDto}" th:action="@{/decorations/}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{decorationId}"/>
+    <div class="container" style="border-color: darkcyan; border-style: solid; border-radius: 10px; padding-bottom: 20px">
+        <div class="panel panel-info">
+            <div class="panel-info" style="background-color:darkcyan; border-radius: 10px">
+                <h1 class="panel-title" style="color: aliceblue;">New Decoration Info</h1>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label>Decoration name:</label>
+                        <input type="text" class="form-control" th:field="*{decorationName}"/>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label>Decoration description:</label>
+                        <input type="text" class="form-control" th:field="*{description}"/>
+                    </div>
+                </div>
+
+                <div class = "row">
+                    <div class="col-md-3 ">
+                        <label class="control-label">Select Image File</label>
+                        <input id="imagefile" name="imagefile" type="file" class="file">
+                    </div>
+                </div>
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label th:for="price">Price:</label>
+                    <label th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Error</label>
+                    <input type="number" class="form-control" th:field="*{price}"/>
+
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="category">Category: </label>
+                    <select id="category" name="category" th:field="*{category}">
+                        <option
+                                th:each="categoryOpt:${T(com.store.domain.DecorationCategory).values()}"
+                                th:value="${categoryOpt}" th:text="${categoryOpt.name()}">
+                        </option>
+                    </select>
+
+                </div>
+            </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-7 ml-md-auto">
+                    <button type="submit" class="btn btn-primary" style="background-color: darkcyan">Submit</button>
+                </div>
+            </div>
+
+            </div>
+    </div>
+    </div>
+
+
+</form>
+</body>
+</html>
