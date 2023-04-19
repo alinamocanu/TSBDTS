@@ -61,7 +61,7 @@ public class DecorationServiceImpl implements DecorationService {
                 decorations = decorationRepository.findAllByCategory(DecorationCategory.valueOf(category.toUpperCase()));
             }
         }
-        else if (name != null  && !name.equals("")){
+        else if (name != null && !name.equals("")){
             decorations = decorationRepository.findAllByDecorationNameContains(name);
         }
         else {
