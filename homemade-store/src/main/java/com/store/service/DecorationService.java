@@ -17,6 +17,8 @@ public interface DecorationService {
 
     Decoration save(DecorationDto decorationDto);
 
+    Decoration save(Decoration decoration);
+
     Decoration findDecorationByDecorationId(Long decorationId);
 
     Page<Decoration> getDecorationsBy(String category, String name, String order, Pageable pageable);

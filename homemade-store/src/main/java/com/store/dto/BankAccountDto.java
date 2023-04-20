@@ -6,10 +6,7 @@ import com.store.validator.OnlyDigits;
 import com.store.validator.OnlyDigitsAndSpaces;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Builder
 @Data
@@ -24,11 +21,11 @@ public class BankAccountDto {
     @OnlyDigitsAndSpaces
     private String cardNumber;
 
-    @Size(min = 3, max = 3)
+    @Min(100)
+    @Max(999)
     private int bankAccountCVV;
 
-    @OnlyDigits
-    @Size(min = 1)
+    @Min(0)
     private double balance;
 
     @JsonIgnore

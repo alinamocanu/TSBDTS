@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Card Info</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<body>
+<div class="container marginTop centered">
+    <h1 style="font-weight: bold; text-align: center"> Your bank accounts </h1>
+    <tr th:if="${bankAccounts.size() == 0}" style="margin-top:5rem;">
+        <h2 class="m-5 centered"><span class="badge badge-secondary" style="background-color: darkcyan">No bank accounts added!</span></h2>
+    </tr>
+    <table th:if="${bankAccounts.size() != 0}" id="items" class="table table-hover marginTop"
+           style="text-align:center;vertical-align: center;">
+        <thead class="thead" style="background-color: darkcyan">
+        <tr>
+            <th>Card number</th>
+            <th>Account CVV</th>
+            <th>Balance</th>
+            <th>Delete</th>
+            <th>Update</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="account, stat : ${bankAccounts}" th:id="${account.cardNumber}" class="table-light">
+
+            <td th:text="${account.cardNumber}"></td>
+
+            <td th:text="${account.bankAccountCVV}"></td>
+
+            <td th:text="${account.balance}"></td>
+
+            <td>
+                <a  class="btn btn-primary mt-1" th:href="@{'/bankAccounts/delete/'+${account.cardNumber}}" style="background-color: darkcyan">Delete</a>
+            </td>
+
+            <td>
+                <a  class="btn btn-primary mt-1" th:href="@{'/bankAccounts/update/'+${account.cardNumber}}" style="background-color: darkcyan">Update</a>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+    <a class="btn btn-success marginTop" href="/bankAccounts/new" style="background-color: darkcyan">Add new bank account</a>
+</div>
+</body>
+</html>

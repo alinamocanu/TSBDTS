@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Card Info</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<body>
+<form th:object="${bankAccountDto}" th:action="@{/bankAccounts/}" method="post" enctype="multipart/form-data">
+    <div class="container" style="border-color: darkcyan; border-style: solid; border-radius: 10px; padding-bottom: 20px">
+        <div class="panel panel-info">
+            <div class="panel-info" style="background-color:darkcyan; border-radius: 10px">
+                <h1 class="panel-title" style="color: aliceblue;">New Card Info</h1>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label>Card number:</label>
+                        <input type="text" class="form-control" th:field="*{cardNumber}"/>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label>CVV:</label>
+                        <input type="text" class="form-control" th:field="*{bankAccountCVV}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label>Balance:</label>
+                        <input type="number" class="form-control" th:field="*{balance}"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7 ml-md-auto">
+                        <button type="submit" class="btn btn-primary" style="background-color: darkcyan">Submit</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</form>
+</body>
+</html>

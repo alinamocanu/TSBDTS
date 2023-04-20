@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container marginTop centered">
+    <h1 style="font-weight: bold; text-align: center"> Your orders </h1>
+    <tr th:if="${orders?.size() == 0}">
+        <h2 class="m-5 centered"><span class="badge badge-secondary" style="background-color: darkcyan">No orders placed yet!</span></h2>
+    </tr>
+    <table th:if="${orders?.size() != 0}" id="items" class="table table-hover marginTop" style="text-align:center;vertical-align: center;">
+        <thead class="thead" style="background-color: darkcyan">
+        <tr>
+            <th>Order Id</th>
+            <th>Date placed</th>
+            <th>Total amount</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="order, stat : ${orders}" th:id="${order.orderId}" class="table-light">
+
+            <td th:text="${order.orderId}"></td>
+
+            <td th:text="${order.orderPlaced}"></td>
+
+            <td th:text="${order.totalAmount}"></td>
+
+            <td>
+                <a class="btn btn-primary" style="background-color: darkcyan" th:href="@{'/orders/' + ${order.orderId}}">Details</a>
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+</body>
+</html>

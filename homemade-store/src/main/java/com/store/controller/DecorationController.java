@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,7 @@ public class DecorationController {
     }
 
     @PostMapping
-    public String saveOrUpdateDecorations(@Valid @ModelAttribute DecorationDto decorationDto,
+    public String saveDecoration(@Valid @ModelAttribute DecorationDto decorationDto,
                                BindingResult bindingResult,
                                @RequestParam("imagefile") MultipartFile file){
         if (bindingResult.hasErrors()){
@@ -58,10 +59,38 @@ public class DecorationController {
         return "redirect:/decorations";
     }
 
+    @RequestMapping("/update/{id}")
+    public String update(@PathVariable Long id, Model model){
+        List<DecorationCategory> categories = new ArrayList<>(Arrays.asList(DecorationCategory.values()));
+        Decoration decoration = decorationService.findDecorationByDecorationId(id);
+        model.addAttribute("decoration", decoration);
+        categories.removeIf(c -> c.equals(decoration.getCategory()));
+        model.addAttribute("categories", categories);
+
+        return "decorationFormUpdate";
+    }
+
+    @PostMapping("/update")
+    public String updateDecoration(@Valid @ModelAttribute Decoration decoration,
+                                 BindingResult bindingResult,
+                                 @RequestParam("imagefile") MultipartFile file){
+        if (bindingResult.hasErrors()){
+            System.out.println(bindingResult.getAllErrors());
+            return "decorationFormUpdate";
+        }
+
+        Decoration savedDecoration = decorationService.save(decoration);
+        imageService.saveImageFile(Long.valueOf(savedDecoration.getDecorationId()), file);
+
+
+        return "redirect:/decorations";
+    }
+
     @GetMapping("/{id}")
     public String getById(@PathVariable Long id, Model model) {
         Decoration decorationFound = decorationService.findDecorationByDecorationId(id);
         model.addAttribute("decoration", decorationFound);
+
         return "decorationDetails";
     }
 

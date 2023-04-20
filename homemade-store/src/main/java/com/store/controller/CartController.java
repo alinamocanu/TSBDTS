@@ -39,11 +39,6 @@ public class CartController {
         this.customerRepository = customerRepository;
     }
 
-    @RequestMapping
-    public String get(){
-        return "cart";
-    }
-
     @PostMapping("/add")
     public String addDecorationToCart(@RequestParam Long decorationId, @RequestParam int quantity) {
         //Customer customer = (Customer) ((customernamePasswordAuthenticationToken) principal).getPrincipal();
@@ -67,7 +62,7 @@ public class CartController {
 
         model.addAttribute("items", cartItems);
         model.addAttribute("cart", cart != null ? cart : Cart.builder().totalAmount(0).build());
-        model.addAttribute("accounts", bankAccountService.getBankAccountsForCustomer(customer.getCustomerId()));
+        model.addAttribute("bankAccounts", bankAccountService.getBankAccountsForCustomer(customer));
 
         return "cart";
     }
@@ -101,7 +96,7 @@ public class CartController {
 
         ModelAndView model = new ModelAndView("cart");
         model.addObject("cart", cart != null ? cart : Cart.builder().totalAmount(0).build());
-        model.addObject("accounts", bankAccountService.getBankAccountsForCustomer(customer.getCustomerId()));
+        model.addObject("bankAccounts", bankAccountService.getBankAccountsForCustomer(customer));
 
         return model;
     }
@@ -110,20 +105,20 @@ public class CartController {
     @PostMapping("/checkout")
     public ModelAndView orderCheckout(@RequestParam String cardNumber, Principal principal) {
         //Customer customer = (Customer) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        Customer customer = Customer.builder().customerId(1L).build();
-        Optional<Order> order = Optional.ofNullable(orderService.createOrder(customer.getCustomerId(), cartService.getCartItems().get(customer.getCustomerId()), cardNumber));
+        Customer customer = customerRepository.findCustomerByCustomerId(1L);
+        Optional<Order> order = orderService.createOrder(customer, cartService.getCartItems().get(customer.getCustomerId()), cardNumber);
 
         ModelAndView modelAndView;
         if (order.isPresent()) {
             modelAndView = new ModelAndView("orders");
-            modelAndView.addObject("orders", orderService.getOrdersByCustomer(customer.getCustomerId()));
+            modelAndView.addObject("orders", orderService.getOrdersByCustomer(customer));
         } else {
             modelAndView = new ModelAndView("cart");
             Cart cart = cartService.findCartByCustomer(customer);
             List<OrderItemDto> items = cartService.getCartContent(customer.getCustomerId());
             modelAndView.addObject("cart", cart != null ? cart : Cart.builder().totalAmount(0).build());
             modelAndView.addObject("items", items);
-            modelAndView.addObject("accounts", bankAccountService.getBankAccountsForCustomer(customer.getCustomerId()));
+            modelAndView.addObject("bankAccounts", bankAccountService.getBankAccountsForCustomer(customer));
         }
 
         return modelAndView;

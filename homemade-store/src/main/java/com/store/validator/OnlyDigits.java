@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = OnlyDigitsAndSpacesValidator.class)
+@Constraint(validatedBy = OnlyDigitsValidator.class)
 @Documented
 public @interface OnlyDigits {
 

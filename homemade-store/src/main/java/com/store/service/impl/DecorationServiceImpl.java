@@ -33,6 +33,11 @@ public class DecorationServiceImpl implements DecorationService {
     }
 
     @Override
+    public Decoration save(Decoration decoration){
+        return decorationRepository.save(decoration);
+    }
+
+    @Override
     public Decoration findDecorationByDecorationId(Long decorationId) {
         Optional<Decoration> decorationOptional = Optional.ofNullable(decorationRepository.findDecorationByDecorationId(decorationId));
         if (decorationOptional.isPresent()) {

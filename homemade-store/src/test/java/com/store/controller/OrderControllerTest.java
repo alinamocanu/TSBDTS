@@ -47,7 +47,7 @@ class OrderControllerTest {
         Long id = 2L;
         OrderDto dto = aOrderDto(id);
 
-        when(orderService.getOne(any())).thenReturn(dto);
+        //when(orderService.getOne(any())).thenReturn(dto);
 
         mockMvc.perform(get("/orders/" + id.intValue()))
                 .andExpect(status().isOk())
@@ -68,7 +68,7 @@ class OrderControllerTest {
         }};
 
         when(customerService.findCustomerByCustomerId(any())).thenReturn(customer);
-        when(orderService.getOrdersByCustomer(any())).thenReturn(orderDtoList);
+        //when(orderService.getOrdersByCustomer(any())).thenReturn(orderDtoList);
 
         MvcResult result = mockMvc.perform(get("/orders/all/" + customerId.intValue()))
                 .andExpect(status().isOk())

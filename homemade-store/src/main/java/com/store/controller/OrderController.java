@@ -1,49 +1,48 @@
 package com.store.controller;
 
-import com.store.dto.OrderDto;
+import com.store.domain.Customer;
+import com.store.domain.Order;
+import com.store.repository.CustomerRepository;
 import com.store.service.OrderService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.List;
 
-@RestController
-@Api(value = "/orders", tags = "Orders")
+@Controller
 @RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
+    private final CustomerRepository customerRepository;
 
-    public OrderController(OrderService service) {
+    public OrderController(OrderService service, CustomerRepository customerRepository) {
         this.orderService = service;
+        this.customerRepository = customerRepository;
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get an order", notes = "Get an order based on the Id received in the request")
-    @ApiResponses(value = {
-            @ApiResponse(code = 404, message = "The order with the entered Id does not exist!")
-    })
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id) {
-        return ResponseEntity
-                .ok()
-                .body(orderService.getOne(id));
+    public String getOrderById(@PathVariable Long id, Model model) {
+        Order orderFound = orderService.findOrderById(id);
+        model.addAttribute("order", orderFound);
+
+        return "orderDetails";
     }
 
-    @GetMapping("/all/{customerId}")
-    @ApiOperation(value = "Get orders for a customer", notes = "Retrieve all orders for a specified customer")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "The data was retrieved successfully"),
-            @ApiResponse(code = 404, message = "Customer with the specified Id was not found!")
-    })
-    public ResponseEntity<List<OrderDto>> getOrdersFromCustomer(@PathVariable Long customerId) {
-        return ResponseEntity
-                .ok()
-                .body(orderService.getOrdersByCustomer(customerId));
+    @GetMapping("/all")
+    public ModelAndView getOrdersByUser(Principal principal) {
+        //User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Customer customer = customerRepository.findCustomerByCustomerId(1L);
+
+        ModelAndView modelAndView = new ModelAndView("orders");
+        List<Order> ordersFound = orderService.getOrdersByCustomer(customer);
+        modelAndView.addObject("orders", ordersFound);
+
+        return modelAndView;
     }
+
 }
