@@ -9,7 +9,9 @@
 <body>
 <div class="container text-center">
   <h1 style="text-align: center; font-weight: bold">Decorations</h1>
-  <a  class="btn btn-primary mt-1" href="/decorations/new" style="background-color: darkcyan">Add new decoration</a>
+  <div sec:authorize="hasRole('ADMIN')">
+    <a class="btn btn-primary mt-1" href="/decorations/new" style="background-color: darkcyan">Add new decoration</a>
+  </div>
   </br>
   </br>
   <form class="form-inline" action="/decorations" method="GET">
@@ -85,6 +87,8 @@
       </li>
     </ul>
   </navbar>
+
+  <div class="mb-2"><form th:action="@{/logout}" method="POST" sec:authorize="hasAnyRole('ADMIN', 'CUSTOMER')"> <input type="submit" class="btn btn-primary" value="Logout" style="background-color: darkcyan"> </form></div>
 </div>
 </body>
 </html>

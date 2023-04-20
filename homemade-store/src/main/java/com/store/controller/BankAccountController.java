@@ -8,6 +8,8 @@ import com.store.dto.BankAccountDto;
 import com.store.repository.CustomerRepository;
 import com.store.service.BankAccountService;
 import io.swagger.annotations.Api;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,8 +54,8 @@ public class BankAccountController {
             return modelAndView;
         }
 
-        //User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        Customer customer = customerRepository.findCustomerByCustomerId(1L);
+        UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
 
         bankAccountDto.setCustomer(customer);
         bankAccountService.addBankAccount(bankAccountDto);
@@ -66,8 +68,8 @@ public class BankAccountController {
 
     @GetMapping()
     public ModelAndView getBankAccountsForCustomer(Principal principal) {
-        //User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        Customer customer = customerRepository.findCustomerByCustomerId(1L);
+        UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
 
         ModelAndView modelAndView = new ModelAndView("bankAccounts");
         List<BankAccount> accountsFound = bankAccountService.getBankAccountsForCustomer(customer);
@@ -95,13 +97,13 @@ public class BankAccountController {
     @PostMapping("/update")
     @Transactional
     public String updateBankAccount(@Valid @ModelAttribute BankAccount bankAccount,
-                                   BindingResult bindingResult){
+                                   BindingResult bindingResult, Principal principal){
         if (bindingResult.hasErrors()){
             System.out.println(bindingResult.getAllErrors());
             return "decorationFormUpdate";
         }
-        //User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        Customer customer = customerRepository.findCustomerByCustomerId(1L);
+        UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
 
         bankAccountService.deleteByCardNumber(bankAccount.getCardNumber());
         bankAccount.setCustomer(customer);

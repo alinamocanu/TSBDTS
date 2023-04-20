@@ -29,11 +29,12 @@
         <tr th:each="item, stat : ${items}" th:id="${item.decorationId}" class="table-light">
             <td th:text="${item.decorationId}"></td>
 
-            <td>
-                <input name="quantity" th:id="${item.decorationId}" style="width:3rem;" class="quantity" type="number"
-                       min="1" th:value="${item.quantity}"/>
-            </td>
+<!--            <td>-->
+<!--                <input name="quantity" th:id="${item.decorationId}" style="width:3rem;" class="quantity" type="number"-->
+<!--                       min="1" th:value="${item.quantity}"/>-->
+<!--            </td>-->
 
+            <td th:text="${item.quantity}"></td>
 
             <td th:text="${item.price}"></td>
 
@@ -49,9 +50,9 @@
                 <form method="post" th:action="'/cart/delete?decorationId=' + ${item.decorationId}">
                     <button type="submit" class="btn btn-info" style="background-color: darkcyan">DELETE</button>
                 </form>
-                <form method="post" th:action="'/cart/update?decorationId=' + ${item.decorationId} + '&qty='+${item.quantity}">
-                    <button type="submit" class="btn btn-primary" style="background-color: darkcyan; margin-left: 5px" onclick="updateCartQuantities()" th:onclick="|updateCartQuantities()|">UPDATE</button>
-                </form>
+<!--                <form method="post" th:action="'/cart/update?decorationId=' + ${item.decorationId} + '&qty='+${item.quantity}">-->
+<!--                    <button type="submit" class="btn btn-primary" style="background-color: darkcyan; margin-left: 5px" onclick="updateCartQuantities()" th:onclick="|updateCartQuantities()|">UPDATE</button>-->
+<!--                </form>-->
             </td>
         </tr>
         </tbody>
@@ -68,7 +69,7 @@
 
     <a class="btn btn-primary" style="background-color: darkcyan; float: right" th:href="@{'/decorations'}">Continue shopping</a>
 
-    <form th:if="${items?.size() != 0}" method="post" action="/cart/checkout">
+    <form th:if="${items?.size() != 0}" th:action="@{/cart/checkout}" method="POST">
         <div class="form-group">
             <label for="account">Payment account: </label>
             <a th:if="${bankAccounts?.size() == 0}" href="/bankAccounts/new">Add a bank account before checkout </a>

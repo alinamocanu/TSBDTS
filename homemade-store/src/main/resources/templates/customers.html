@@ -21,7 +21,7 @@
             <th>Email</th>
             <th>Address</th>
             <th>Delete</th>
-<!--            <th>Update</th>-->
+            <th>Update</th>
         </tr>
         </thead>
 
@@ -42,9 +42,9 @@
                 <a  class="btn btn-primary mt-1" th:href="@{'/customers/delete/'+${account.customerId}}" style="background-color: darkcyan">Delete</a>
             </td>
 
-<!--            <td>-->
-<!--                <a  class="btn btn-primary mt-1" th:href="@{'/customers/update/'+${account.customerId}}" style="background-color: darkcyan">Update</a>-->
-<!--            </td>-->
+            <td>
+                <a  class="btn btn-primary mt-1" th:href="@{'/customers/update/'+${account.customerId}}" style="background-color: darkcyan">Update</a>
+            </td>
         </tr>
         </tbody>
 

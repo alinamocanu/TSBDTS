@@ -4,6 +4,6 @@ import com.store.domain.Customer;
 
 public class CustomerAlreadyExistException extends RuntimeException {
     public CustomerAlreadyExistException(){
-        super("The customer with this email already exist in the database");
+        super("The customer with this username already exist in the database");
     }
 }

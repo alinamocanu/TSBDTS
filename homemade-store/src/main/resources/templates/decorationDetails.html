@@ -26,9 +26,12 @@
 
             <h5 class="card-text" th:text="${decoration.category} "></h5>
 
-            <a  class="btn btn-primary mt-1" th:href="@{'/decorations/delete/'+${decoration.decorationId}}" style="background-color: darkcyan">Delete</a>
-
-            <a  class="btn btn-primary mt-1" th:href="@{'/decorations/update/'+${decoration.decorationId}}" style="background-color: darkcyan">Edit</a>
+            <div sec:authorize="hasRole('ADMIN')">
+                 <a  class="btn btn-primary mt-1" th:href="@{'/decorations/delete/'+${decoration.decorationId}}" style="background-color: darkcyan">Delete</a>
+            </div>
+            <div sec:authorize="hasRole('ADMIN')">
+                <a  class="btn btn-primary mt-1" th:href="@{'/decorations/update/'+${decoration.decorationId}}" style="background-color: darkcyan">Edit</a>
+            </div>
         </div>
 
         <form th:action="'/cart/add?decorationId=' + ${decoration.decorationId} + '&quantity=1'" method="post">

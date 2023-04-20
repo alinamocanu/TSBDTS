@@ -4,6 +4,8 @@ import com.store.domain.Customer;
 import com.store.domain.Order;
 import com.store.repository.CustomerRepository;
 import com.store.service.OrderService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +37,8 @@ public class OrderController {
 
     @GetMapping("/all")
     public ModelAndView getOrdersByUser(Principal principal) {
-        //User user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-        Customer customer = customerRepository.findCustomerByCustomerId(1L);
+        UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+        Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
 
         ModelAndView modelAndView = new ModelAndView("orders");
         List<Order> ordersFound = orderService.getOrdersByCustomer(customer);

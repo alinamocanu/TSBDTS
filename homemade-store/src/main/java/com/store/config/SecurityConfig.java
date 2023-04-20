@@ -19,14 +19,8 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-//@Profile("mysql")
+@Profile("h2")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private CustomerService customerService;
-
-    @Autowired
-    private DataSource dataSource;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -42,23 +36,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("guest")
                 .password(passwordEncoder().encode("1234"))
-                .roles("GUEST");
+                .roles("GUEST")
+                .and()
+                .withUser("bety")
+                .password(passwordEncoder().encode("1234"))
+                .roles("CUSOMTER");
 
     }
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication()
-//                    .dataSource(dataSource)
-//                    .usersByUsernameQuery("select username,password,enabled "
-//                            + "from customers "
-//                            + "where username = ?")
-//                    .authoritiesByUsernameQuery("select username, roleName "
-//                        + "from customers c "
-//                        + "join roles_customers rc on (rc.customerId = c.customerId) "
-//                        + "join roles r on (r.roleId = rc.roleId) "
-//                        + "where username = ?");
-//                    auth.userDetailsService(userDetailsService);
-//        }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -69,25 +53,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/register", "/login", "/login-error", "/", "/decorations", "/h2-console/**").permitAll()
+                .antMatchers("/decorations/new", "customers/**", "decorations/delete", "decorations/update").hasRole("ADMIN")
+                .antMatchers("/cart/**", "/orders/**", "/bankAccounts/**").hasAnyRole("CUSTOMER", "ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .loginProcessingUrl("/authUser")
+                .failureUrl("/login-error")
                 .permitAll()
-                .successHandler(loginSuccessHandler())
-                .failureHandler(loginFailureHandler())
                 .and()
                 .logout()
                 .permitAll()
                 .logoutSuccessUrl("/")
                 .and()
-                .exceptionHandling().accessDeniedPage("/access_denied")
-                .and()
-                .authorizeRequests()
-                .mvcMatchers("/register", "/login", "/login-error", "/", "/decorations", "h2-console").permitAll()
-                .mvcMatchers("/decorations/new").hasRole("ADMIN")
-                .mvcMatchers("/cart/**", "/orders/**", "/bankAccounts/**").hasAnyRole("CUSTOMER", "ADMIN")
-                .and()
-                .csrf();
+                .exceptionHandling().accessDeniedPage("/access_denied");
     }
 
     public AuthenticationSuccessHandler loginSuccessHandler() {
