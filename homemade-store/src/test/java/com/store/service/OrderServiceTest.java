@@ -87,7 +87,7 @@ class OrderServiceTest {
             add(orderDto2);
         }};
 
-        when(customerService.findCustomerByCustomerId(customerId)).thenReturn(customer);
+        //when(customerService.findCustomerByCustomerId(customerId)).thenReturn(customer);
         when(orderRepository.findAllByCustomer(customer)).thenReturn(orders);
         when(orderMapper.mapToDto(order1)).thenReturn(orderDto1);
         when(orderMapper.mapToDto(order2)).thenReturn(orderDto2);

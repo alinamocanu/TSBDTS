@@ -40,7 +40,7 @@ public class CustomerControllerTest {
     void test_createCustomer_happyFlow() throws Exception {
         //Arrange
         CustomerDto dto = CustomerDtoUtil.aCustomerDto("Ana", "Popescu");
-        when(customerService.create(any())).thenReturn(dto);
+        //when(customerService.create(any())).thenReturn(dto);
 
         //Act
         MvcResult result = mockMvc.perform(post("/customers")
@@ -57,7 +57,7 @@ public class CustomerControllerTest {
     void test_getOneCustomer() throws Exception {
         Long id = Long.valueOf(2);
         CustomerDto dto = CustomerDtoUtil.aCustomerDto(id);
-        when(customerService.getOne(id)).thenReturn(dto);
+        //when(customerService.getOne(id)).thenReturn(dto);
 
         mockMvc.perform(get("/customers/" + id))
                 .andExpect(status().isOk())

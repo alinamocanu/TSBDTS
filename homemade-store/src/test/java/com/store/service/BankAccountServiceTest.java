@@ -44,7 +44,7 @@ class BankAccountServiceTest {
         BankAccount savedBankAccount = aBankAccount(cardNumber);
 
         when(bankAccountMapper.mapToEntity(bankAccountDto)).thenReturn(bankAccount);
-        when(customerService.findCustomerByCustomerId(customerId)).thenReturn(customer);
+        //when(customerService.findCustomerByCustomerId(customerId)).thenReturn(customer);
         when(bankAccountRepository.findBankAccountByCardNumber(cardNumber)).thenReturn(null);
         when(bankAccountRepository.save(bankAccount)).thenReturn(savedBankAccount);
         when(bankAccountMapper.mapToDto(savedBankAccount)).thenReturn(bankAccountDto);
@@ -80,7 +80,7 @@ class BankAccountServiceTest {
         }};
 
 
-        when(customerService.findCustomerByCustomerId(customerId)).thenReturn(customer);
+        //when(customerService.findCustomerByCustomerId(customerId)).thenReturn(customer);
         when(bankAccountRepository.findBankAccountsByCustomer(customer)).thenReturn(bankAccounts);
         when(bankAccountMapper.mapToDto(bankAccount1)).thenReturn(bankAccountDto1);
         when(bankAccountMapper.mapToDto(bankAccount2)).thenReturn(bankAccountDto2);

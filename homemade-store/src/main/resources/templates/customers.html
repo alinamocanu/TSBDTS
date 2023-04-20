@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<body>
+<div class="container marginTop centered">
+    <h1 style="font-weight: bold; text-align: center"> Customers </h1>
+    <tr th:if="${customers.size() == 0}" style="margin-top:5rem;">
+        <h2 class="m-5 centered"><span class="badge badge-secondary" style="background-color: darkcyan">No users!</span></h2>
+    </tr>
+    <table th:if="${customers.size() != 0}" id="items" class="table table-hover marginTop"
+           style="text-align:center;vertical-align: center;">
+        <thead class="thead" style="background-color: darkcyan">
+        <tr>
+            <th>Customer Id</th>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Delete</th>
+<!--            <th>Update</th>-->
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="account, stat : ${customers}" th:id="${account.customerId}" class="table-light">
+
+            <td th:text="${account.customerId}"></td>
+
+            <td th:text="${account.username}"></td>
+
+            <td th:text="${account.firstName} + ${account.lastName}"></td>
+
+            <td th:text="${account.email}"></td>
+
+            <td th:text="${account.address}"></td>
+
+            <td>
+                <a  class="btn btn-primary mt-1" th:href="@{'/customers/delete/'+${account.customerId}}" style="background-color: darkcyan">Delete</a>
+            </td>
+
+<!--            <td>-->
+<!--                <a  class="btn btn-primary mt-1" th:href="@{'/customers/update/'+${account.customerId}}" style="background-color: darkcyan">Update</a>-->
+<!--            </td>-->
+        </tr>
+        </tbody>
+
+    </table>
+    <a class="btn btn-success marginTop" href="/register" style="background-color: darkcyan">Register</a>
+</div>
+</body>
+</html>

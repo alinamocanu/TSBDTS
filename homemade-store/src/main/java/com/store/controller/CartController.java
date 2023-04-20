@@ -41,7 +41,7 @@ public class CartController {
 
     @PostMapping("/add")
     public String addDecorationToCart(@RequestParam Long decorationId, @RequestParam int quantity) {
-        //Customer customer = (Customer) ((customernamePasswordAuthenticationToken) principal).getPrincipal();
+//        Customer customer = (Customer) ((customernamePasswordAuthenticationToken) principal).getPrincipal();
         Customer customer = Customer.builder().customerId(1L).build();
         Customer existingCustomer = customerRepository.save(customer);
         if (quantity <= 0)

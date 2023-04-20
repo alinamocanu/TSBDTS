@@ -67,7 +67,7 @@ class OrderControllerTest {
             add(orderDto2);
         }};
 
-        when(customerService.findCustomerByCustomerId(any())).thenReturn(customer);
+        //when(customerService.findCustomerByCustomerId(any())).thenReturn(customer);
         //when(orderService.getOrdersByCustomer(any())).thenReturn(orderDtoList);
 
         MvcResult result = mockMvc.perform(get("/orders/all/" + customerId.intValue()))

@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Builder
 @Data
@@ -19,20 +18,26 @@ public class CustomerDto {
 
     private Long customerId;
 
-    @Size(min = 1, max = 50)
+    @Email
+    private String email;
+
+    @Length(min = 4, max = 100)
+    private String username;
+
+    @Length(min = 4, max = 100)
+    private String password;
+
     @OnlyLetters
+    @Length(min = 1, max = 100)
     private String firstName;
 
     @OnlyLetters
-    @Size(min = 1, max = 50)
+    @Length(min = 1, max = 50)
     private String lastName;
 
     @NotEmpty
     @OnlyLetters
-    @Size(min = 0, max = 300)
+    @Length(min = 0, max = 300)
     private String address;
 
-    @OnlyDigits
-    @Size(min = 10, max = 12)
-    private String phoneNumber;
 }

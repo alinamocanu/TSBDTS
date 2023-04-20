@@ -4,39 +4,19 @@ import com.store.domain.Customer;
 import com.store.dto.CustomerDto;
 import com.store.mapper.CustomerMapper;
 import com.store.repository.CustomerRepository;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-public class CustomerService {
+public interface CustomerService{
 
-    private final CustomerRepository customerRepository;
-    private final CustomerMapper customerMapper;
+    void register(Customer customer);
 
-    public CustomerService(CustomerRepository repository, CustomerMapper customerMapper) {
-        this.customerRepository = repository;
-        this.customerMapper = customerMapper;
-    }
+    List<Customer> getAllCustomers();
 
-    public CustomerDto create(CustomerDto customerDto) {
-        Customer customer = customerMapper.mapToEntity(customerDto);
-        Customer savedCustomer = customerRepository.save(customer);
-        return customerMapper.mapToDto(savedCustomer);
-    }
+    void deleteById(Long id);
 
-    public CustomerDto getOne(Long id) {
-        return customerMapper.mapToDto(customerRepository.findCustomerByCustomerId(id));
-    }
-
-    public List<CustomerDto> getAllCustomers() {
-        List<Customer> customers = customerRepository.findAll();
-
-        return customers.stream().map(c -> customerMapper.mapToDto(c)).collect(Collectors.toList());
-    }
-
-    public Customer findCustomerByCustomerId(Long customerId) {
-        return customerRepository.findCustomerByCustomerId(customerId);
-    }
+    Customer findById(Long id);
 }

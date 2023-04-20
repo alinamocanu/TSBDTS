@@ -8,7 +8,7 @@ public class CustomerDtoUtil {
                 .firstName(firstName)
                 .lastName(lastName)
                 .address("Bucuresti, Calea Crangasi nr.9")
-                .phoneNumber("0712345678")
+                .username("betty")
                 .build();
     }
 
@@ -18,7 +18,7 @@ public class CustomerDtoUtil {
                 .firstName("Ana")
                 .lastName("Popescu")
                 .address("Bucuresti, Calea Crangasi nr.9")
-                .phoneNumber("0712345678")
+                .username("betty")
                 .build();
     }
 }
