@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 public class IndexController {
 
-    @GetMapping("/")
+    @GetMapping
     public String returnHomePage() {
         
         log.info("Getting homepage...");
