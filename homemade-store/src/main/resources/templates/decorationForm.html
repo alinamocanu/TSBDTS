@@ -16,16 +16,17 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-3 form-group">
-                        <label>Decoration name:</label>
-                        <input type="text" class="form-control" th:field="*{decorationName}"/>
+                        <label id="decorationName">Decoration name:</label>
+                        <input type="text" name="decorationName" class="form-control" th:field="*{decorationName}"/>
                     </div>
-
+                    <label class="text-danger" th:if="${#fields.hasErrors('decorationName')}" th:errors="*{decorationName}">Error</label>
                 </div>
                 <div class="row">
                     <div class="col-md-3 form-group">
-                        <label>Decoration description:</label>
-                        <input type="text" class="form-control" th:field="*{description}"/>
+                        <label id="description">Decoration description:</label>
+                        <input type="text" name="description" class="form-control" th:field="*{description}"/>
                     </div>
+                    <label class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Error</label>
                 </div>
 
                 <div class = "row">
@@ -33,16 +34,16 @@
                         <label class="control-label">Select Image File</label>
                         <input id="imagefile" name="imagefile" type="file" class="file">
                     </div>
+                    <label class="text-danger" th:if="${#fields.hasErrors('imagefile')}" th:errors="*{imagefile}">Error</label>
                 </div>
 
 
             <div class="row">
                 <div class="col-md-3">
                     <label th:for="price">Price:</label>
-                    <label th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Error</label>
                     <input type="number" class="form-control" th:field="*{price}"/>
-
                 </div>
+                <label class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Error</label>
             </div>
 
 

@@ -21,13 +21,13 @@ public class DecorationDto {
     private Long decorationId;
 
     @OnlyLetters
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 30, message = "Length isn't between 1 and 30")
     private String decorationName;
 
-    @Min(0)
+    @Min(value = 0, message = "Price should be positive")
     private double price;
 
-    @Size(min = 0, max = 1000)
+    @Size(min = 0, max = 1000, message = "Incorrect length of description")
     private String description;
 
     private DecorationCategory category;

@@ -36,7 +36,6 @@ public class CustomerDto {
     private String lastName;
 
     @NotEmpty
-    @OnlyLetters
     @Length(min = 0, max = 300)
     private String address;
 
