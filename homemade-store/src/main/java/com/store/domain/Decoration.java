@@ -34,5 +34,6 @@ public class Decoration {
     private List<OrderItem> orderItems;
 
     @Lob
+
     private Byte[] image;
 }

@@ -73,7 +73,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
         return bankAccountRepository.save(bankAccount);
     }
-    
+
     public BankAccount update(BankAccount bankAccount){
         return  bankAccountRepository.save(bankAccount);
     }

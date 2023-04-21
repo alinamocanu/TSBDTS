@@ -1,103 +1,78 @@
 package com.store.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.store.domain.DecorationCategory;
-import com.store.dto.CustomerDto;
-import com.store.dto.DecorationDto;
+
+import com.store.domain.Decoration;
+
 import com.store.service.DecorationService;
-import com.store.util.CustomerDtoUtil;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.ui.Model;
 
-import static com.store.util.DecorationDtoUtil.aDecorationDto;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WebMvcTest(controllers = DecorationController.class)
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("h2")
 class DecorationControllerTest {
+    @Autowired
+    MockMvc mockMvc;
 
     @MockBean
-    private DecorationService decorationService;
+    DecorationService decorationService;
 
-    @Autowired
-    private MockMvc mockMvc;
+    @MockBean
+    Model model;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
+    @Disabled
     @Test
-    void test_addDecoration() throws Exception {
-        //Arrange
-        DecorationDto decorationDto = aDecorationDto(1L);
-        String category = "christmas";
-        //when(decorationService.add(any(), any())).thenReturn(decorationDto);
+    public void showByIdMvc() throws Exception {
 
-        //Act
-        MvcResult result = mockMvc.perform(post("/decorations/" +category)
-                        .content(objectMapper.writeValueAsString(decorationDto))
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/decorations/{id}", "1"))
                 .andExpect(status().isOk())
-                .andReturn();
-
-        //Assert
-        assertThat(result.getResponse().getContentAsString()).isEqualTo(objectMapper.writeValueAsString(decorationDto));
+                .andExpect(view().name("decorationDetails"));
     }
 
-    @Test
-    void test_getOneDecoration() throws Exception {
-        Long id = Long.valueOf(2);
-        DecorationDto dto = aDecorationDto(id);
-        //when(decorationService.getOne(id)).thenReturn(dto);
 
-        mockMvc.perform(get("/decorations/"+id))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("decorationId", is(dto.getDecorationId().intValue())))
-                .andExpect(jsonPath("$.decorationName", is(dto.getDecorationName())))
-                .andExpect(jsonPath("$.price", is(dto.getPrice())));
-    }
 
     @Test
-    void getDecorationByCategory() throws Exception {
-        DecorationCategory category = DecorationCategory.CHRISTMAS;
-        DecorationDto dto1 = aDecorationDto(1L);
-        DecorationDto dto2 = aDecorationDto(2L);
-        List<DecorationDto> decorationDtos = new ArrayList<>(){{
-            add(dto1);
-            add(dto2);
-        }};
+    @WithMockUser(username = "guest", password = "12345", roles = "GUEST")
+    public void showByIdMockMvc() throws Exception {
+        Long id = 1L;
+        Decoration decorationTest = new Decoration();
+        decorationTest.setDecorationId(id);
+        decorationTest.setDecorationName("test");
 
-        //when(decorationService.getByCategory(category)).thenReturn(decorationDtos);
+        when(decorationService.findDecorationByDecorationId(id)).thenReturn(decorationTest);
 
-        mockMvc.perform(get("/decorations/filter/" + category))
+        mockMvc.perform(get("/decorations/{id}", "1"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(convertObjectToJsonString(decorationDtos)));
+                .andExpect(view().name("decorationDetails"))
+                .andExpect(model().attribute("decoration", decorationTest))
+                .andExpect(content().contentType("text/html;charset=UTF-8"));
     }
 
-    private String convertObjectToJsonString(List<DecorationDto> decorationDtos) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(decorationDtos);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
+
+
+    @Test
+    @WithMockUser(username = "admin", password = "1234", roles = "ADMIN")
+    public void deleteByIdMockMvc() throws Exception {
+
+        mockMvc.perform(get("/decorations/delete/{id}", "1"))
+                .andExpect(redirectedUrl("/decorations"));
     }
 
 }

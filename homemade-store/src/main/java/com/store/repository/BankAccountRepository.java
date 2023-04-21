@@ -11,5 +11,5 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Intege
 
     List<BankAccount> findBankAccountsByCustomer(Customer customer);
 
-    void deleteBankAccountByCardNumber(String cardNumber);
+     void deleteBankAccountByCardNumber(String cardNumber);
 }

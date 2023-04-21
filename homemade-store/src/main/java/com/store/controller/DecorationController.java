@@ -101,7 +101,7 @@ public class DecorationController {
     @GetMapping
     public String getAllProducts(@RequestParam(required = false) String category, @RequestParam(required = false) String name, @RequestParam(required = false) String order,
                                  Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
-                                     
+
         log.info("Getting decorations...");
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(4);
@@ -121,7 +121,7 @@ public class DecorationController {
     public String deleteById(@PathVariable String id){
         log.info("Deleting decoration...");
         decorationService.deleteById(Long.valueOf(id));
-        
+
         return "redirect:/decorations";
     }
 }

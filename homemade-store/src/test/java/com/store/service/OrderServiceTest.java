@@ -6,6 +6,7 @@ import com.store.dto.CustomerDto;
 import com.store.dto.OrderDto;
 import com.store.mapper.OrderMapper;
 import com.store.repository.OrderRepository;
+import com.store.service.impl.OrderServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,12 +27,9 @@ import static org.mockito.Mockito.when;
 class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
-    @Mock
-    private OrderMapper orderMapper;
-    @Mock
-    private  CustomerService customerService;
+
     @InjectMocks
-    private OrderService orderService;
+    private OrderServiceImpl orderService;
 
     @Test
     void findOrderByOrderId() {
@@ -42,31 +40,25 @@ class OrderServiceTest {
         when(orderRepository.findOrderByOrderId(id)).thenReturn(order);
 
         //Act
-        //Order result = orderService.findOrderByOrderId(id);
+        Order result = orderService.findOrderById(id);
 
         //Assert
-        //assertEquals(order, result);
-    }
-
-    @Test
-    void createOrder() {
+        assertEquals(order, result);
     }
 
     @Test
     void getOne() {
         //arrange
         Long id = Long.valueOf(1);
-        OrderDto orderDto = aOrderDto(id);
         Order order = aOrder(1L);
 
         when(orderRepository.findOrderByOrderId(id)).thenReturn(order);
-        when(orderMapper.mapToDto(order)).thenReturn(orderDto);
 
         //Act
-        //OrderDto result = orderService.getOne(id);
+        Order result = orderService.findOrderById(id);
 
         //Assert
-        //assertEquals(orderDto, result);
+        assertEquals(order, result);
     }
 
     @Test
@@ -80,22 +72,14 @@ class OrderServiceTest {
             add(order2);
         }};
 
-        OrderDto orderDto1 = aOrderDto(1L, customer);
-        OrderDto orderDto2 = aOrderDto(2L, customer);
-        List<OrderDto> orderDtos = new ArrayList<>(){{
-            add(orderDto1);
-            add(orderDto2);
-        }};
-
         //when(customerService.findCustomerByCustomerId(customerId)).thenReturn(customer);
         when(orderRepository.findAllByCustomer(customer)).thenReturn(orders);
-        when(orderMapper.mapToDto(order1)).thenReturn(orderDto1);
-        when(orderMapper.mapToDto(order2)).thenReturn(orderDto2);
+
 
         //Act
-       // List<OrderDto> result = orderService.getOrdersByCustomer(customerId);
+        List<Order> result = orderService.getOrdersByCustomer(customer);
 
         //Assert
-        //assertEquals(orderDtos, result);
+        assertEquals(orders, result);
     }
 }

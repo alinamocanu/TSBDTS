@@ -28,6 +28,6 @@ public interface BankAccountService {
     void deleteByCardNumber(String cardNumber);
 
     BankAccount save(BankAccount bankAccount);
-    
+
     BankAccount update(BankAccount bankAccount);
 }

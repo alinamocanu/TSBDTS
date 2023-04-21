@@ -5,11 +5,13 @@ import com.store.domain.DecorationCategory;
 import com.store.dto.DecorationDto;
 import com.store.mapper.DecorationMapper;
 import com.store.repository.DecorationRepository;
+import com.store.service.impl.DecorationServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,27 @@ class DecorationServiceTest {
     @Mock
     private DecorationMapper decorationMapper;
     @InjectMocks
-    private DecorationService decorationService;
+    private DecorationServiceImpl decorationService;
+
+    /*
+    @BeforeEach
+    public void setUp() throws Exception {
+        productService = new ProductServiceImpl(productRepository);
+    }
+    */
+
+    @Test
+    public void findProducts() {
+        List<Decoration> productsRet = new ArrayList<Decoration>();
+        Decoration product = new Decoration();
+        product.setDecorationId(1L);
+        productsRet.add(product);
+
+        when(decorationRepository.findAll()).thenReturn(productsRet);
+        List<Decoration> products = decorationRepository.findAll();
+        assertEquals(products.size(), 1);
+        verify(decorationRepository, times(1)).findAll();
+    }
 
     @Test
     void findDecorationByDecorationId() {
@@ -50,98 +72,15 @@ class DecorationServiceTest {
         //Arrange
         DecorationDto decorationDto = aDecorationDto(1L);
         Decoration decoration = aDecoration(1L);
-        Decoration savedCustomer = aDecoration(1L);
 
         when(decorationMapper.mapToEntity(decorationDto)).thenReturn(decoration);
-        when(decorationRepository.save(decoration)).thenReturn(savedCustomer);
-        when(decorationMapper.mapToDto(savedCustomer)).thenReturn(decorationDto);
+        when(decorationRepository.save(any())).thenReturn(decoration);
 
-        //Act
-        //DecorationDto result = decorationService.add(decorationDto, "christmas");
+        Decoration result = decorationService.save(decorationDto);
 
         //Assert
-        //assertThat(result).isNotNull();
-        verify(decorationMapper, times(1)).mapToEntity(decorationDto);
-        verify(decorationMapper, times(1)).mapToDto(savedCustomer);
+        assertThat(result).isNotNull();
         verify(decorationRepository, times(1)).save(decoration);
-
-        verifyNoMoreInteractions(decorationMapper, decorationRepository);
     }
 
-    @Test
-    void getOne() {
-        //arrange
-        Long id = Long.valueOf(1);
-        DecorationDto decorationDto = aDecorationDto(id);
-        Decoration decoration = aDecoration(1);
-
-        when(decorationRepository.findDecorationByDecorationId(id)).thenReturn(decoration);
-        when(decorationMapper.mapToDto(decoration)).thenReturn(decorationDto);
-
-        //Act
-        //DecorationDto result = decorationService.getOne(id);
-
-        //Assert
-        //assertEquals(decorationDto, result);
-    }
-
-    @Test
-    void getAllDecorations() {
-        //arrange
-        Long id1 = Long.valueOf(1);
-        DecorationDto decorationDto1 = aDecorationDto(id1);
-        Long id2 = Long.valueOf(2);
-        DecorationDto decorationDto2 = aDecorationDto(id2);
-        List<DecorationDto> decorationDtos = new ArrayList<>(){{
-            add(decorationDto1);
-            add(decorationDto2);
-        }};
-
-        Decoration decoration1 = aDecoration(1);
-        Decoration decoration2 = aDecoration(2);
-        List<Decoration> decorations = new ArrayList<>(){{
-            add(decoration1);
-            add(decoration2);
-        }};
-
-        when(decorationRepository.findAll()).thenReturn(decorations);
-        when(decorationMapper.mapToDto(decoration1)).thenReturn(decorationDto1);
-        when(decorationMapper.mapToDto(decoration2)).thenReturn(decorationDto2);
-
-        //Act
-        //List<DecorationDto> result = decorationService.getAllDecorations();
-
-        //Assert
-        //assertEquals(decorationDtos, result);
-    }
-
-    @Test
-    void getByCategory() {
-        //arrange
-        Long id1 = Long.valueOf(1);
-        DecorationDto decorationDto1 = aDecorationDto(id1);
-        Long id2 = Long.valueOf(2);
-        DecorationDto decorationDto2 = aDecorationDto(id2);
-        List<DecorationDto> decorationDtos = new ArrayList<>(){{
-            add(decorationDto1);
-            add(decorationDto2);
-        }};
-
-        Decoration decoration1 = aDecoration(1);
-        Decoration decoration2 = aDecoration(2);
-        List<Decoration> decorations = new ArrayList<>(){{
-            add(decoration1);
-            add(decoration2);
-        }};
-
-        when(decorationRepository.findAllByCategory(DecorationCategory.CHRISTMAS)).thenReturn(decorations);
-        when(decorationMapper.mapToDto(decoration1)).thenReturn(decorationDto1);
-        when(decorationMapper.mapToDto(decoration2)).thenReturn(decorationDto2);
-
-        //Act
-        //List<DecorationDto> result = decorationService.getByCategory(DecorationCategory.CHRISTMAS);
-
-        //Assert
-        //assertEquals(decorationDtos, result);
-    }
 }

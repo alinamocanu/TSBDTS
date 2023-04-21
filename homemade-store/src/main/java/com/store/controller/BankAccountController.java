@@ -81,6 +81,7 @@ public class BankAccountController {
         return modelAndView;
     }
 
+
     @Transactional
     @RequestMapping("/delete/{cardNumber}")
     public String deleteByCardNumber(@PathVariable String cardNumber){
@@ -105,7 +106,7 @@ public class BankAccountController {
                                    BindingResult bindingResult, Principal principal){
         if (bindingResult.hasErrors()){
             System.out.println(bindingResult.getAllErrors());
-             return "bankAccountUpdate";
+            return "bankAccountUpdate";
         }
         UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
