@@ -6,6 +6,7 @@ import com.store.dto.DecorationDto;
 import com.store.service.DecorationService;
 import com.store.service.ImageService;
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@Api(value = "/decorations", tags = "Decorations")
+@Slf4j
 @RequestMapping("/decorations")
 public class DecorationController {
 
@@ -38,6 +39,7 @@ public class DecorationController {
 
     @RequestMapping("/new")
     public String newDecoration(Model model){
+        log.info("Adding new decoration...");
         List<DecorationCategory> categories = Arrays.asList(DecorationCategory.values());
         model.addAttribute("decorationDto", new DecorationDto());
         model.addAttribute("categories", categories);
@@ -61,6 +63,7 @@ public class DecorationController {
 
     @RequestMapping("/update/{id}")
     public String update(@PathVariable Long id, Model model){
+        log.info("Updating decoration...");
         List<DecorationCategory> categories = new ArrayList<>(Arrays.asList(DecorationCategory.values()));
         Decoration decoration = decorationService.findDecorationByDecorationId(id);
         model.addAttribute("decoration", decoration);
@@ -98,7 +101,8 @@ public class DecorationController {
     @GetMapping
     public String getAllProducts(@RequestParam(required = false) String category, @RequestParam(required = false) String name, @RequestParam(required = false) String order,
                                  Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
-
+                                     
+        log.info("Getting decorations...");
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(4);
         Page<Decoration> decorationPage = decorationService.getDecorationsBy(category, name, order, PageRequest.of(currentPage - 1, pageSize));
@@ -115,7 +119,9 @@ public class DecorationController {
 
     @RequestMapping("/delete/{id}")
     public String deleteById(@PathVariable String id){
+        log.info("Deleting decoration...");
         decorationService.deleteById(Long.valueOf(id));
+        
         return "redirect:/decorations";
     }
 }

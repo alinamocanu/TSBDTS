@@ -9,6 +9,7 @@
 <form th:object="${bankAccount}" th:action="@{/bankAccounts/update}" method="post">
   <div class="container" style="border-color: darkcyan; border-style: solid; border-radius: 10px; padding-bottom: 20px">
     <div class="panel panel-info">
+      <input type="hidden" th:field="*{cardNumber}"/>
       <div class="panel-info" style="background-color:darkcyan; border-radius: 10px">
         <h1 class="panel-title" style="color: aliceblue;">Update Card Info</h1>
       </div>

@@ -26,14 +26,20 @@
             <li class="nav-item">
                 <a class="nav-link" href="/decorations">Decorations</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" sec:authorize="isAnonymous()">
                 <a class="nav-link" href="/login">Login</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" sec:authorize="isAnonymous()">
                 <a class="nav-link" href="/register">Sing up</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('CUSTOMER')">
+                <a class="nav-link" href="/bankAccounts">Bank accounts</a>
             </li>
             <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                 <a class="nav-link" href="/customers">Customers</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'CUSTOMER')">
+                <form th:action="@{/logout}" method="POST"> <input type="submit" class="btn btn-primary" value="Logout" style="background-color: white; border-color: white; color: grey"> </form>
             </li>
         </ul>
     </div>

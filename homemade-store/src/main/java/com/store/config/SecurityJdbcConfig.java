@@ -24,7 +24,7 @@ public class SecurityJdbcConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/register", "/login", "/login-error", "/", "/decorations", "h2-console").permitAll()
+                .antMatchers("/register", "/login", "/login-error", "/", "/decorations", "h2-console", "/access_denied").permitAll()
                 .antMatchers("/decorations/new", "customers/**", "decorations/delete", "decorations/update").hasRole("ADMIN")
                 .antMatchers("/cart/**", "/orders/**", "/bankAccounts/**").hasAnyRole("CUSTOMER", "ADMIN")
                 .and()

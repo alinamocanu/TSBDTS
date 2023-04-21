@@ -13,6 +13,7 @@ import com.store.service.CartService;
 import com.store.service.DecorationService;
 import com.store.service.OrderService;
 import com.store.service.security.JpaUserDetailsService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@Slf4j
 @RequestMapping("/cart")
 public class CartController {
 
@@ -45,6 +47,7 @@ public class CartController {
 
     @PostMapping("/add")
     public String addDecorationToCart(@RequestParam Long decorationId, @RequestParam int quantity, Principal principal) {
+        log.info("Creating new cart...");
         UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
 
@@ -76,6 +79,7 @@ public class CartController {
     @Transactional
     @PostMapping("/delete")
     public String deleteItem(@RequestParam Long decorationId, Principal principal, Model model){
+        log.info("Deleting cart...");
         UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
 
@@ -91,6 +95,7 @@ public class CartController {
 
     @PostMapping("/update")
     public ModelAndView updateDecorationQty(@RequestParam Long decorationId, @RequestParam int qty, Principal principal){
+        log.info("Updating cart...");
         UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
 
@@ -111,6 +116,7 @@ public class CartController {
 
     @RequestMapping(method=RequestMethod.POST, value = "/checkout")
     public ModelAndView orderCheckout(@RequestParam String cardNumber, Principal principal) {
+        log.info("Checkout cart...");
         UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
 
