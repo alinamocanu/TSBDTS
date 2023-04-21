@@ -8,6 +8,7 @@ import com.store.mapper.CustomerMapper;
 import com.store.repository.security.AuthorityRepository;
 import com.store.service.CustomerService;
 import com.store.service.security.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import java.security.Principal;
 import java.util.*;
 
 @Controller
+@Slf4j
 public class CustomerController {
     private final CustomerService customerService;
     private final CustomerMapper customerMapper;
@@ -53,6 +55,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerForm(Model model){
+        log.info("Register customer...");
         model.addAttribute("customerDto", new CustomerDto());
 
         return "registerForm";
@@ -83,6 +86,7 @@ public class CustomerController {
 
     @GetMapping("/customers")
     public ModelAndView getCustomers() {
+        log.info("Getting customers...");
         ModelAndView modelAndView = new ModelAndView("customers");
         List<Customer> customers = customerService.getAllCustomers();
         modelAndView.addObject("customers", customers);
@@ -93,6 +97,7 @@ public class CustomerController {
     @RequestMapping("/customers/delete/{id}")
     @Transactional
     public String deleteByCardNumber(@PathVariable Long id){
+        log.info("Deleting customer...");
         customerService.deleteById(id);
 
         return "redirect:/customers";
@@ -100,6 +105,7 @@ public class CustomerController {
 
     @RequestMapping("/customers/update/{id}")
     public String update(@PathVariable Long id, Model model){
+        log.info("Updating customer info...");
         Customer customer = customerService.findById(id);
         model.addAttribute("customer", customer);
 

@@ -5,7 +5,6 @@
     <title>Cart</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
     <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/main.js}" src="../static/js/main.js"></script>
 </head>
 <body>
 <div class="container marginTop centered">
@@ -50,9 +49,6 @@
                 <form method="post" th:action="'/cart/delete?decorationId=' + ${item.decorationId}">
                     <button type="submit" class="btn btn-info" style="background-color: darkcyan">DELETE</button>
                 </form>
-<!--                <form method="post" th:action="'/cart/update?decorationId=' + ${item.decorationId} + '&qty='+${item.quantity}">-->
-<!--                    <button type="submit" class="btn btn-primary" style="background-color: darkcyan; margin-left: 5px" onclick="updateCartQuantities()" th:onclick="|updateCartQuantities()|">UPDATE</button>-->
-<!--                </form>-->
             </td>
         </tr>
         </tbody>
@@ -90,9 +86,7 @@
                 account added yet.</p>
         </div>
         <button th:if="${bankAccounts?.size() != 0}" type="submit" class="btn btn-dark" style="background-color: darkcyan">Checkout</button>
-
     </form>
-
 </div>
 </body>
 </html>

@@ -8,6 +8,7 @@ import com.store.dto.BankAccountDto;
 import com.store.repository.CustomerRepository;
 import com.store.service.BankAccountService;
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-@Api(value = "/bankAccounts", tags = "BankAccounts")
+@Slf4j
 @RequestMapping("/bankAccounts")
 public class BankAccountController {
     private final BankAccountService bankAccountService;
@@ -38,6 +39,7 @@ public class BankAccountController {
 
     @RequestMapping("/new")
     public String newAccount(Model model) {
+        log.info("Adding new bank account...");
         model.addAttribute("bankAccountDto", new BankAccountDto());
 
         return "bankAccountForm";
@@ -68,6 +70,7 @@ public class BankAccountController {
 
     @GetMapping()
     public ModelAndView getBankAccountsForCustomer(Principal principal) {
+        log.info("Get bank accounts for customers...");
         UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
 
@@ -78,9 +81,10 @@ public class BankAccountController {
         return modelAndView;
     }
 
-    @RequestMapping("/delete/{cardNumber}")
     @Transactional
+    @RequestMapping("/delete/{cardNumber}")
     public String deleteByCardNumber(@PathVariable String cardNumber){
+        log.info("Deleting bank account...");
         bankAccountService.deleteByCardNumber(cardNumber);
 
         return "redirect:/bankAccounts";
@@ -88,6 +92,7 @@ public class BankAccountController {
 
     @RequestMapping("/update/{cardNumber}")
     public String update(@PathVariable String cardNumber, Model model){
+        log.info("Updating bank account...");
         BankAccount bankAccount = bankAccountService.findBankAccountByCardNumber(cardNumber);
         model.addAttribute("bankAccount", bankAccount);
 
@@ -100,14 +105,13 @@ public class BankAccountController {
                                    BindingResult bindingResult, Principal principal){
         if (bindingResult.hasErrors()){
             System.out.println(bindingResult.getAllErrors());
-            return "decorationFormUpdate";
+             return "bankAccountUpdate";
         }
         UserDetails user = (UserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         Customer customer = customerRepository.findCustomerByUsername(user.getUsername());
 
-        bankAccountService.deleteByCardNumber(bankAccount.getCardNumber());
         bankAccount.setCustomer(customer);
-        bankAccountService.save(bankAccount);
+        bankAccountService.update(bankAccount);
 
         return "redirect:/bankAccounts";
     }

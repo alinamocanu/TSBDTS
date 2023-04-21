@@ -61,11 +61,6 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public void deleteByCardNumber(String cardNumber) {
-        Optional<BankAccount> bankAccountOptional = Optional.ofNullable(bankAccountRepository.findBankAccountByCardNumber(cardNumber));
-        if (!bankAccountOptional.isPresent()) {
-            throw new RuntimeException("Bank account not found!");
-        }
-
         bankAccountRepository.deleteBankAccountByCardNumber(cardNumber);
     }
 
@@ -77,5 +72,9 @@ public class BankAccountServiceImpl implements BankAccountService {
         });
 
         return bankAccountRepository.save(bankAccount);
+    }
+    
+    public BankAccount update(BankAccount bankAccount){
+        return  bankAccountRepository.save(bankAccount);
     }
 }
